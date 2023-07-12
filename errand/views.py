@@ -1,6 +1,5 @@
 from django.db.models import Count
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import UserSerializer, ItemCategorySerializer, ListItemSerializer, ListItemReviewSerializer, PostReviewSerializer
@@ -42,13 +41,9 @@ class ListItemViewSet(ModelViewSet):
 
         
 class ListItemReviewViewSet(ModelViewSet):
-    http_method_names = ['get','post','delete','patch']
+    http_method_names = ['get','post','delete',]
     def get_queryset(self):
         return ItemReview.objects.filter(item_id = self.kwargs['item_pk']).order_by('-date_created')
-    
-    
-    def get_serializer_context(self):
-        return {'user_id':self.request.user.id,'item_id':self.kwargs['item_pk']}
     
     def get_serializer_class(self):
         if self.request.method == 'POST':
