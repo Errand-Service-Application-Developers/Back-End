@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ErrandGo.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ErrandGo.settings.dev')
 
 application = get_wsgi_application()

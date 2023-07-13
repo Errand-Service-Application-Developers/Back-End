@@ -6,7 +6,7 @@ from .models import ListItem,ItemCategory,ItemReview
 
 class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
-        fields = ['id','username','email','phone','post_count']
+        fields = ['id','username','email','phone','post_count','expoPushToken']
 
     post_count = serializers.IntegerField(read_only = True)
     
