@@ -27,6 +27,7 @@ class ListItem(models.Model):
     category = models.ForeignKey(ItemCategory, on_delete=models.PROTECT, related_name='items')
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='items')
     date_created = models.DateTimeField(auto_now_add=True)
+    image_url = models.CharField(max_length=500, default="https://res.cloudinary.com/dagfqp7qa/image/upload/v1688892172/samples/cloudinary-icon.png")
 
     def __str__(self) -> str:
         return self.title
