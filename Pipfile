@@ -13,6 +13,7 @@ drf-nested-routers = "*"
 django-cors-headers = "*"
 gunicorn = "*"
 dj-database-url = "*"
+whitenoise = "*"
 
 [dev-packages]
 
