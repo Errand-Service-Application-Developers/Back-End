@@ -9,7 +9,7 @@ ALLOWED_HOSTS = ['192.168.43.173']
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'errandgo',
+        'NAME': 'errandgo_db',
         'HOST': 'localhost',
         'USER': 'root',
         'PASSWORD': 'macquena'

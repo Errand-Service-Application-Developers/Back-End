@@ -40,5 +40,14 @@ class ItemReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='reviews')
     date_created = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self) -> str:
+        return f"{self.user} {self.message}"
+    
+
+class ReviewReply(models.Model):
+    review = models.ForeignKey(ItemReview,on_delete=models.CASCADE,related_name='replies')
+    reply = models.CharField(max_length= 500, null=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='replier',null = False)
+    date_created = models.DateTimeField(auto_now_add= True)
     
     

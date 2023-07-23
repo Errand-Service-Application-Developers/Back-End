@@ -2,8 +2,8 @@ from django.db.models import Count
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import UserSerializer, ItemCategorySerializer, ListItemSerializer, ListItemReviewSerializer, PostReviewSerializer
-from .models import User, ItemCategory, ListItem,ItemReview
+from .serializers import UserSerializer, ItemCategorySerializer, ListItemSerializer, ListItemReviewSerializer, PostReviewSerializer,ReviewReplySerializer,PostReplySerializer
+from .models import User, ItemCategory, ListItem,ItemReview,ReviewReply
 
 
 class UserViewSet(ModelViewSet):
@@ -43,9 +43,20 @@ class ListItemViewSet(ModelViewSet):
 class ListItemReviewViewSet(ModelViewSet):
     http_method_names = ['get','post','delete',]
     def get_queryset(self):
-        return ItemReview.objects.filter(item_id = self.kwargs['item_pk']).order_by('-date_created')
+        return ItemReview.objects.prefetch_related('replies').filter(item_id = self.kwargs['item_pk']).order_by('-date_created')
     
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return PostReviewSerializer
         return ListItemReviewSerializer
+
+class ReviewReplyViewSet(ModelViewSet):
+    http_method_names = ['get','post','delete',]
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return PostReplySerializer
+        return ReviewReplySerializer
+    
+    def get_queryset(self):
+        return ReviewReply.objects.select_related('user').filter(review_id = self.kwargs['review_pk']).order_by('-date_created')
+    

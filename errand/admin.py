@@ -1,6 +1,6 @@
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib import admin
-from .models import User, ItemCategory, ListItem
+from .models import User, ItemCategory, ListItem, ReviewReply
 
 
 @admin.register(User)
@@ -19,6 +19,7 @@ class UserAdmin(BaseUserAdmin):
 @admin.register(ItemCategory)
 class ItemCategoryAdmin(admin.ModelAdmin):
     list_display = ["id", "name", "icon", "backgroundColor", "color"]
+    list_editable = ['name']
     list_per_page = 10
 
 
@@ -28,3 +29,9 @@ class ListItemAdmin(admin.ModelAdmin):
     list_editable = ["title","price"]
     list_per_page = 10
     list_select_related = ["category", "user"]
+    
+    
+
+@admin.register(ReviewReply)
+class ReviewReplyAdmin(admin.ModelAdmin):
+    list_display = ['id','review','reply','date_created']
