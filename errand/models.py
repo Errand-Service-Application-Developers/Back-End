@@ -4,7 +4,6 @@ from django.db import models
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=50, default = '##########')
-    expoPushToken = models.CharField(max_length=250, null= True)
 
     def __str__(self) -> str:
         return self.username
@@ -49,5 +48,6 @@ class ReviewReply(models.Model):
     reply = models.CharField(max_length= 500, null=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='replier',null = False)
     date_created = models.DateTimeField(auto_now_add= True)
+    task = models.ForeignKey(ListItem,on_delete=models.CASCADE,related_name='replies')
     
     

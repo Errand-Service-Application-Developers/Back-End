@@ -37,10 +37,11 @@ class ReviewReplySerializer(serializers.ModelSerializer):
 class PostReplySerializer(serializers.ModelSerializer):
     review_id = serializers.IntegerField()
     user_id = serializers.IntegerField()
+    task_id = serializers.IntegerField()
     
     class Meta:
         model = ReviewReply
-        fields = ['review_id','reply','user_id']
+        fields = ['review_id','reply','user_id','task_id']
 
 
 class ListItemReviewSerializer(serializers.ModelSerializer):

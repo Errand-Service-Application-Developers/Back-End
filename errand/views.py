@@ -58,5 +58,5 @@ class ReviewReplyViewSet(ModelViewSet):
         return ReviewReplySerializer
     
     def get_queryset(self):
-        return ReviewReply.objects.select_related('user').filter(review_id = self.kwargs['review_pk']).order_by('-date_created')
+        return ReviewReply.objects.prefetch_related('user').filter(review_id = self.kwargs['review_pk']).order_by('-date_created')
     
