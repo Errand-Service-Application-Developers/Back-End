@@ -20,6 +20,16 @@ class ItemCategory(models.Model):
 
 
 class ListItem(models.Model):
+    
+    PENDING = 'PENDING'
+    IN_PROGRESS = 'IN PROGRESS'
+    COMPLETED = 'COMPLETED'
+    
+    TASK_STATUS_CHOICES = [
+        (PENDING, 'Pending'),
+        (IN_PROGRESS, 'In Progress'),
+        (COMPLETED, 'Completed'),
+    ]
     title = models.CharField(max_length=50, null=False)
     description = models.TextField(null=False)
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -27,6 +37,9 @@ class ListItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='items')
     date_created = models.DateTimeField(auto_now_add=True)
     image_url = models.CharField(max_length=500, default="https://res.cloudinary.com/dagfqp7qa/image/upload/v1688892172/samples/cloudinary-icon.png")
+    task_status = models.CharField(max_length=20, choices=TASK_STATUS_CHOICES, default=PENDING)
+
+    
 
     def __str__(self) -> str:
         return self.title
@@ -50,4 +63,19 @@ class ReviewReply(models.Model):
     date_created = models.DateTimeField(auto_now_add= True)
     task = models.ForeignKey(ListItem,on_delete=models.CASCADE,related_name='replies')
     
+
+class Request(models.Model):
+    ACCEPTED = 'Accepted'
+    PENDING = 'Pending'
+    DECLINED = 'Declined'
     
+    REQUEST_STATUS = [
+        (ACCEPTED,"Accepted"),
+        (PENDING,'Pending'),
+        (DECLINED,"Declined")
+    ]
+    task = models.ForeignKey(ListItem,on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=REQUEST_STATUS,default=PENDING)
+    owner = models.ForeignKey(User,on_delete=models.CASCADE,related_name='request_received')
+    requester  = models.ForeignKey(User,on_delete=models.CASCADE,related_name='request_sent')
+    date_created = models.DateTimeField(auto_now_add=True)

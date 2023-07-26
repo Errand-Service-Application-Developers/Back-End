@@ -21,8 +21,10 @@ admin.site.site_header = 'ErrandGo'
 admin.site.index_title = 'Admin'
 
 urlpatterns = [
+    
+    path('',include('core.urls')),
     path('admin/', admin.site.urls),
-     path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     path("errand/",include("errand.urls")),
 ]
