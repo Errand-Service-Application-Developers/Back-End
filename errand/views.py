@@ -1,9 +1,10 @@
 from django.db.models import Count
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
+from rest_framework import status
 from rest_framework.response import Response
-from .serializers import UserSerializer, ItemCategorySerializer, ListItemSerializer, ListItemReviewSerializer, PostReviewSerializer,ReviewReplySerializer,PostReplySerializer
-from .models import User, ItemCategory, ListItem,ItemReview,ReviewReply
+from .serializers import UserSerializer, ItemCategorySerializer, ListItemSerializer, ListItemReviewSerializer, PostReviewSerializer,ReviewReplySerializer,PostReplySerializer,RequestSerializer,PostRequestSerializer
+from .models import User, ItemCategory, ListItem,ItemReview,ReviewReply,Request
 
 
 class UserViewSet(ModelViewSet):
@@ -27,7 +28,25 @@ class UserViewSet(ModelViewSet):
         queryset =  ListItem.objects.filter(user_id = pk).prefetch_related('reviews').order_by('-date_created')
         serializer = ListItemSerializer(queryset,many=True)
         return Response(serializer.data)
-        
+    
+    
+    @action(detail=True, methods = ['GET','DELETE'])
+    def ownedrequests(self,request,pk):
+        if request.method == 'GET':
+            queryset = Request.objects.select_related('owner','task','requester').filter(owner_id = pk).order_by('-date_created')
+            serializer = RequestSerializer(queryset,many = True)
+            return Response(serializer.data)
+        elif request.method == 'DELETE':
+            Request.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @action(detail=True, methods = ['GET'])
+    def sentrequests(self,request,pk):
+        if request.method == 'GET':
+            queryset = Request.objects.select_related('owner','task','requester').filter(requester_id = pk).order_by('-date_created')
+            serializer = RequestSerializer(queryset,many = True)
+            return Response(serializer.data)
+    
 
 
 class ItemCategoryViewSet(ModelViewSet):
@@ -59,4 +78,12 @@ class ReviewReplyViewSet(ModelViewSet):
     
     def get_queryset(self):
         return ReviewReply.objects.prefetch_related('user').filter(review_id = self.kwargs['review_pk']).order_by('-date_created')
-    
+
+
+class RequestViewSet(ModelViewSet):
+    http_method_names = ['get','post','delete','patch']
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return PostRequestSerializer
+        return RequestSerializer
+    queryset = Request.objects.select_related('task','owner').all().order_by('-date_created')
