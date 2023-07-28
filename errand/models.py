@@ -65,9 +65,9 @@ class ReviewReply(models.Model):
     
 
 class Request(models.Model):
-    ACCEPTED = 'Accepted'
-    PENDING = 'Pending'
-    DECLINED = 'Declined'
+    ACCEPTED = 'ACCEPTED'
+    PENDING = 'PENDING'
+    DECLINED = 'DECLINED'
     
     REQUEST_STATUS = [
         (ACCEPTED,"Accepted"),

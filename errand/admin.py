@@ -1,6 +1,6 @@
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib import admin
-from .models import User, ItemCategory, ListItem, ReviewReply
+from .models import User, ItemCategory, ListItem, ReviewReply,Request
 
 
 @admin.register(User)
@@ -35,3 +35,8 @@ class ListItemAdmin(admin.ModelAdmin):
 @admin.register(ReviewReply)
 class ReviewReplyAdmin(admin.ModelAdmin):
     list_display = ['id','review','reply','date_created']
+    
+    
+@admin.register(Request)
+class RequestAdmin(admin.ModelAdmin):
+    list_display = ['id','task','owner','requester','status']

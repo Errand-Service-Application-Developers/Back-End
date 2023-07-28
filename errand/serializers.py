@@ -80,7 +80,7 @@ class SimpleTaskSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     class Meta:
         model = ListItem
-        fields = ['id','title','task_status','image_url','price']
+        fields = ['id','title','description','task_status','image_url','price']
     
 class RequestSerializer(serializers.ModelSerializer):
     task = SimpleTaskSerializer()
